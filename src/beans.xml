@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+				http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd
+				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+ 	<context:annotation-config/>
+	<context:component-scan base-package="org.yang.web.struts.action"/>
+	<context:component-scan base-package="org.yang.service.impl"/>
+	<context:component-scan base-package="org.yang.dao.impl"/>
+	
+<!--  基于注解的事务管理  -->
+	<tx:annotation-driven transaction-manager="txManager"/>
+	<bean id="txManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+			<property name="sessionFactory" ref="sessionFactory"/>
+		</bean>
+	
+	<!-- 
+	   <bean id = "userAction" class="org.yang.web.struts.action.UserAction" scope="prototype">
+	    	<property name="returnPageInfo" value="ok" />
+	     </bean>
+     -->
+
+
+
+<!-- hibernate  & SessionFactory && hibernateTemplate-->
+
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <!-- 数据源 -->
+        <property name="dataSource" ref="myDataSource"/>
+        
+        <!-- mapping 配置 -->
+        <property name="mappingResources">
+            <list>
+                <value>org/yang/bean/User.hbm.xml</value>
+                <value>org/yang/bean/Goods.hbm.xml</value>
+ 				<value>org/yang/bean/GameAccounts.hbm.xml</value>
+ 				<value>org/yang/bean/Manager.hbm.xml</value>
+ 				<value>org/yang/bean/Bulletin.hbm.xml</value>
+ 				
+ 				<value>org/yang/bean/Order.hbm.xml</value>
+ 				<value>org/yang/bean/OrderAccountDetail.hbm.xml</value>
+ 				<value>org/yang/bean/OrderGoodsDetail.hbm.xml</value>
+            </list>
+        </property>
+        
+        
+        <!-- Mysql 方言 -->
+         <property name="hibernateProperties">
+	    	<props>
+	    		<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+	    		<prop key="hibernate.show_sql">true</prop>
+	    		<prop key="log4j.logger.org.hibernate.type">trace</prop>
+	    		
+	    	</props>
+	    </property>
+	    
+        
+      	<!-- oracle 方言 
+        <property name="hibernateProperties">
+	    	<props>
+	    		<prop key="hibernate.dialect">org.hibernate.dialect.Oracle9Dialect</prop>
+	    		 <!-
+	    		<prop key="hibernate.hbm2ddl.auto">update</prop > 
+	    		 ->
+	    		<prop key="hibernate.show_sql">true</prop>
+	    		<prop key="log4j.logger.org.hibernate.type">trace</prop>
+	    		
+	    	</props>
+	    </property>
+	    -->
+	    
+    </bean>
+    
+ <!-- dbcp 数据源 -->
+    <context:property-placeholder location="classpath:jdbc.properties" />
+	<bean id="myDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	    <property name="driverClassName" value="${jdbc.driver}"/>
+	    <property name="url" value="${jdbc.url}"/>
+	    <property name="username" value="${jdbc.useruname}"/>
+	    <property name="password" value="${jdbc.password}"/>
+	   	<property name="initialSize" value="5"/>
+	   	<property name="minIdle" value="3"/>
+	    <property name="maxIdle" value="15"/>
+	    <property name="maxWait" value="4000"/>
+	    <property name="testOnBorrow" value="true"/>
+	    <property name="validationQuery" value="select 1"/> 
+	    <property name="removeAbandonedTimeout" value="120"/>
+	</bean>
+ </beans>

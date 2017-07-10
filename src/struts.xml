@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+    
+    
+ <struts>
+	<!-- <constant name="struts.devMode" value="true" />   -->
+	
+ 	<!-- 上传文件最大限制,临时目录. -->    
+    <constant name="struts.multipart.maxSize" value="40000000"></constant>    
+    <constant name="struts.multipart.saveDir" value="c:\\temp"></constant>  
+        
+	 <!-- common pack g -->
+ 	<package name="general" namespace="/" extends="struts-default">
+    	 <!-- 默认action -->
+    	 <default-action-ref name="defultAction" />
+    	 
+ 		 <!-- 全局结果 -->
+	    <global-results>
+			<result name="global-exception">/jsp/error/global-exception.jsp</result>
+			<result name="global-error">/jsp/error/global-error.jsp</result>
+			<result name="global-404">/jsp/error/global-404.jsp</result>
+			<result name="global-illegal">/jsp/error/global-illegal.jsp</result>
+		</global-results>
+		
+		<!-- 声明式的异常处理-->
+    	<global-exception-mappings> 
+    	    <exception-mapping result="global-exception" exception="java.lang.Exception" />
+    	</global-exception-mappings>
+    	
+		<action name="defultAction" class="defaultAction" method="execute"/>
+ 	</package><!-- common pack end-->
+	
+    <package name="a_p" namespace="/action" extends="general">
+    
+        <interceptors> 
+        	 <!-- 定义 拦截器 -->
+       		 <interceptor name="userInterceptor" class="org.yang.web.struts.interceptor.UserPermissionInterceptor" />
+       		 <interceptor name="cartInterceptor" class="org.yang.web.struts.interceptor.CartInterceptor" />
+       		 <interceptor name="managerInterceptor" class="org.yang.web.struts.interceptor.ManagerPermissionInterceptor" />
+    	 </interceptors>
+ 
+<!--  ======= action def ======= -->
+
+    	 <action name="goods-*" class="goodsAction" method="{1}">
+			 <result name="index">/jsp/goods/goods-index.jsp</result>
+			 <result name="detail">/jsp/goods/goods-detail.jsp</result>
+			 <result name="all">/jsp/goods/goods-all.jsp</result>
+			 <result name="error">/jsp/goods/goods-error.jsp</result>
+		</action>
+		
+		
+		<action name="bulletin-*" class="bulletinAction" method="{1}">
+			 <result name="all">/jsp/bulletin/bulletin.jsp</result>
+			 <result name="detail">/jsp/bulletin/bulletin-detail.jsp</result>
+		</action>
+		
+		
+		 <action name="cart-*" class="cartAction" method="{1}">
+		 	<!-- cart拦截器 -->
+            <interceptor-ref name="defaultStack" />
+            <interceptor-ref name ="cartInterceptor" >
+            	<param name="includeMethods"> buy,checkout,remove,update*</param>
+            </interceptor-ref>
+            <result name="login">/jsp/user/user-login.jsp</result>
+			 <result name="all">/jsp/goods/cart.jsp</result>
+			 <result name="error">/jsp/goods/cart-error.jsp</result>
+			 <result name="order" type="chain" >user-order</result>
+		</action>
+    
+    
+        <action name="user-*" class="userAction" method="{1}">
+            <!-- user拦截器 -->
+            <interceptor-ref name="defaultStack" />
+            <interceptor-ref name ="userInterceptor" >
+            	<param name="includeMethods"> order ,update,info</param>
+            </interceptor-ref>
+            <result name="success" type="chain">goods-turnIndex</result>
+            <result name="error">/jsp/user/user-login.jsp</result>
+            <result name="info">/jsp/user/user-info.jsp</result>
+            <result name="orderDetail">/jsp/user/order-detail.jsp</result>
+            <result name="order">/jsp/user/user-order.jsp</result>
+            
+        </action>
+ 
+         <action name="manager-*" class="managerAction" method="{1}">
+         	<interceptor-ref name="defaultStack" />
+            <!-- manager 登陆拦截 -->
+            <interceptor-ref name ="managerInterceptor" >
+				<param name="excludeMethods"> set*,get*,login</param>
+            </interceptor-ref>
+            <!-- 上传拦截器 -->
+            <interceptor-ref name="fileUpload">
+                <param name="maximumSize ">1048576</param>    
+                <param name="allowedTypes">image/png,image/gif,image/jpeg </param>
+            </interceptor-ref>
+            
+            <result name="login">/WEB-INF/manager/admin-login.jsp</result>
+            <result name="success">/WEB-INF/manager/admin-center.jsp</result>
+            
+            <result name="user">/WEB-INF/manager/admin-user.jsp</result>
+            
+            <result name="goods">/WEB-INF/manager/admin-goods.jsp</result>
+            <result name="upGoods">/WEB-INF/manager/admin-modify-goods.jsp</result>
+            <result name="modGoods">/WEB-INF/manager/admin-modify-goods.jsp</result>
+            <result name="input">/WEB-INF/manager/admin-modify-goods.jsp</result>
+            
+            <result name="order">/WEB-INF/manager/admin-checkout-order.jsp</result>
+            <result name="orderDetail">/WEB-INF/manager/admin-detail-order.jsp</result>
+            
+            <result name="bulletin">/WEB-INF/manager/admin-checkout-bulletin.jsp</result>
+            <result name="relBulletin">/WEB-INF/manager/admin-rel-bulletin.jsp</result> 
+            
+            <result name="chainOrder" type="chain" >manager-checkoutOrder</result>
+            <result name="chainBullet" type="chain" >manager-bulletin</result>
+            <result name="chainUsers" type="chain" >manager-users</result>
+            <result name="chainGoods" type="chain" >manager-goods</result>
+        </action>
+        
+         
+	</package>
+	
+	
+	
+<!-- ======= Ajax action def ======= -->
+
+	 <package name="ajax_p" namespace="/ajax" extends="json-default,general">
+		 <interceptors>
+		 	<interceptor name="managerInterceptor" class="org.yang.web.struts.interceptor.ManagerPermissionInterceptor" />
+    	 </interceptors>
+	 	<action name="cartAjax-*" class="cartAjaxAction" method="{1}"></action>
+	 	<action name="userAjax-*" class="userAjaxAction" method="{1}"></action>
+	 	
+	 	<action name="managerAjax-*" class="managerAjaxAction" method="{1}">
+	 		 <interceptor-ref name="defaultStack" />
+	 		 <interceptor-ref name ="managerInterceptor" >
+				<param name="excludeMethods"> set*,get*,</param>
+            </interceptor-ref>
+	 	</action>
+	 	
+	 	<action name="bulletinAjax-*" class="bulletinAjaxAction" method="{1}">
+	 		<result name="success" type="json">
+	 			<param name="excludeProperties">bulletinService</param> 
+	 		</result>
+	 		<result name="error" >error</result>
+	 	</action>
+	 	
+	 </package>
+	 
+	
+</struts>

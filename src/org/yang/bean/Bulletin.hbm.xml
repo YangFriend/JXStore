@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping package="org.yang.bean">
+
+	<class name="Bulletin" table="t_bulletin">
+		<id name="id" column="id_" type="long">
+			<generator class="identity" />
+		</id>
+		<property name="managerid" column="manager_id" type="java.lang.Long"  not-null="true" />
+		<property name="releaseDate" type="java.util.Date"/>
+		<property name="content" type="java.lang.String"/>
+		<property name="title" type="java.lang.String"/>
+	</class>
+</hibernate-mapping>

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping package="org.yang.bean">
+
+	<class name="OrderGoodsDetail" table="t_order_goodsDetail" >
+		<id name="id" column="id" type="long">
+			<generator class="identity" />
+		</id>
+		
+		<property name="orderId" type="java.lang.Long" not-null="true" />
+		
+		<property name="goodsId" type="java.lang.Long" not-null="true"/>
+		<property name="goodsname" type="java.lang.String"/>
+		<property name="goodsinfo" type="java.lang.String"/>
+		<property name="goodsprice" type="java.lang.Double"/>
+		<property name="num" type="java.lang.Integer" column="num_"/>
+		<!-- lazy="false" 重要 这个是不立即加载,在jsp,用el访问session都没了 -->
+		<list  name="accounts" cascade="all" lazy="false">
+			<key column="GoodsDetail_ID" />
+			<list-index column="idx"/>
+			<one-to-many class="OrderAccountDetail"/>
+		</list>
+		
+	</class>
+</hibernate-mapping>

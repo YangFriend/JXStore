@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping package="org.yang.bean">
+
+	<class name="GameAccounts" table="t_gameAccounts" optimistic-lock="version" >
+		<id name="id" column="id" type="long">
+			<generator class="identity" />
+		</id>
+		<version name="version" column="version_" type="java.lang.Integer" > </version>
+		
+		<!-- unique-key 这个外键约束oracle自动,发布时候需要自定义约束名,改 -->
+		<property name="goodsId"  type="java.lang.Long" unique-key="SYS_C005243" not-null="true"/>
+		
+		<property name="ter" not-null="true" type="java.lang.String"/>
+		<property name="regDate" type="java.util.Date"/>
+		<property name="accountName" not-null="true"  type="java.lang.String"/>
+		<property name="password" column="password_" not-null="true"  type="java.lang.String"/>
+		<property name="sell"  type="java.lang.Integer" not-null="true"/>
+
+	</class>
+</hibernate-mapping>

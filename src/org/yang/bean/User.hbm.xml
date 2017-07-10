@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+        
+<hibernate-mapping package="org.yang.bean">
+
+	<class name="User" table="t_user">
+		<id name="id" column="id" type="long">
+			<generator class="identity" />
+		</id>
+		<property name="userName" type="java.lang.String" unique-key="userName_constraint" not-null="true"/>
+		<property name="userPassword" type="java.lang.String" column="userPassword"/>
+		<property name="regDate" column="regDate" type="java.util.Date"/>
+		<property name="money" type="java.lang.Double"/>
+		<!-- not-null="true" hibernate 配置约束 优先于 数据库约束,即使数据库没有约束也依然生效 KKKKK -->
+		<property name="email" type="java.lang.String" unique-key="email_constraint" />
+		<property name="phone" type="java.lang.String"/>
+		<property name="gread" type="java.lang.Integer"/>
+		<property name="status" type="java.lang.Integer" length="1" not-null="true"/>
+	</class>
+</hibernate-mapping>
