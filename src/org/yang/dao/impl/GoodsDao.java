@@ -113,7 +113,6 @@ public class GoodsDao extends ParentDao {
 
 	}
 	
-
 	/**
 	 * 分页(仅在售的):取数据集
 	 * 
@@ -125,7 +124,7 @@ public class GoodsDao extends ParentDao {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Goods> getSellGoodsList(int page, int max) {
-		String hql = "from Goods where status = 0 order by id";
+		String hql = "from Goods where status=0 ";
 		Query query = super.getCurrentSession().createQuery(hql);
 		query.setFirstResult(page);
 		query.setMaxResults(max);
@@ -139,7 +138,7 @@ public class GoodsDao extends ParentDao {
 	 */
 	public long getSellCount() {
 		Query query = super.getCurrentSession().createQuery(
-				"select count(g) from Goods as g where g.status = 0");
+				"select count(*) from Goods where status = 0");
 
 		return (Long) query.uniqueResult();
 
