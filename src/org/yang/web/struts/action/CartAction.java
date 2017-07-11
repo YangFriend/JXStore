@@ -15,7 +15,6 @@ import org.yang.exception.GameAccountNotEnoughException;
 import org.yang.exception.UserMoneyNotEnoughException;
 import org.yang.service.impl.CartService;
 import org.yang.service.impl.UserService;
-import org.yang.util.Tool;
 
 
 @Component
@@ -54,10 +53,10 @@ public class CartAction extends SupportAction {
 			userService.buy(userInformation, cartInformation);
 			super.session.remove("cartInformation");
 		} catch (UserMoneyNotEnoughException e1) {
-			super.request.put("info", "抱歉,你的余额不足!");
+			super.request.put("info", "抱歉,你的余额不足以支付本次购买!");
 			return "error";
 		} catch (GameAccountNotEnoughException e2) {
-			super.request.put("info", "抱歉,你需要购买某个商品 库存不足!");
+			super.request.put("info", "抱歉,你需要购买的某个商品 库存不足!");
 			return "error";
 		}
 		return "order";
@@ -111,18 +110,22 @@ public class CartAction extends SupportAction {
 		super.request.put("cartDto", cartDto);
 		return "all";
 	}
-
-	public String updateCart() {
+	/**
+	 * 移除全部
+	 * @return
+	 */
+	public String removeAll() {
 		this.checkCreatCartInformation();
-		cartDto = this.update(cartInformation);
-		super.request.put("cartDto", cartDto);
-		return "all";
+		cartInformation.clear();
+		super.request.put("info", "这里空空如也");
+		return "error";
+	
 	}
 
 	/**
 	 * 
 	 * 更新
-	 * 
+	 * TODO 这里冗长的代码,可以跟createCartDto 抽取合并为一个方法
 	 * @param cartInformation
 	 *            context
 	 */
@@ -130,16 +133,22 @@ public class CartAction extends SupportAction {
 		User userInformation = (User) super.session.get("userInformation");
 		double allValue = 0;
 		double couponValue = 0;
+		
 		// 更新Total,及context中购买数量
 		for (CartGoodsList cgl : cartDto.getGoodsL()) {
 			int num = cgl.getNum();
 			double price = cgl.getPrice();
 			if (num > 3) {
+				//购买>3
 				num = 3;
 				cartInformation.put(cgl.getId(), num);
 				cgl.setNum(num);
-				cartDto.setTips("某些商品已超上限,已设为最高购买数量!");
-			} else {
+				cartDto.setTips("某些商品超出购买上限,已设为最高可购买数量!");
+			} else if(num <= 0){
+				//购买0个?
+				cartDto.getGoodsL().remove(cgl);
+				cartInformation.remove(cgl.getId());
+			}else{
 				cartInformation.put(cgl.getId(), num);
 			}
 			cgl.setTotal(price * num);
@@ -153,8 +162,8 @@ public class CartAction extends SupportAction {
 			cartDto.setCouponCode("首单自动优惠至一折,无需输入");
 			couponValue = allValue * 0.9;
 		}
-		cartDto.setActPrice(Tool.formatDouble(allValue - couponValue, 2));
-		cartDto.setCouponValue(Tool.formatDouble(couponValue, 2));
+		cartDto.setActPrice(allValue - couponValue);
+		cartDto.setCouponValue(couponValue);
 		cartDto.setUserMoney(userInformation.getMoney());
 		return cartDto;
 
@@ -172,27 +181,38 @@ public class CartAction extends SupportAction {
 		double couponValue = 0;
 		CartDto newCartDto = new CartDto();
 		newCartDto.setGoodsL(new ArrayList<CartGoodsList>());
+		
+		String addTips1 = "",addTips2="";
 		// goodsL
 		for (Long key : cartInformation.keySet()) {
 			Goods g = cartService.getGoodsById(key);
+			if(g.getStatus() == 1){
+				addTips1="某些下架的商品,已被从购物车移除.<br />";
+				cartInformation.remove(key);
+				continue;
+			}
 			int num = cartInformation.get(g.getId());
 			double price = g.getPrice();
 			CartGoodsList cgl = new CartGoodsList();
 			cgl.setId(g.getId());
 			cgl.setImage(g.getImage());
 			cgl.setName(g.getName());
+			cgl.setSurplus(g.getSurplus());
 			cgl.setPrice(price);
 			if (num > 3) {
 				cgl.setNum(3);
 				cartInformation.put(key, 3);
-				newCartDto.setTips("某些商品已超上限,已设为最高购买数量!");
+				addTips2="某些商品超出购买上限,已设为最高可购买数量!";
 			} else {
 				cgl.setNum(num);
 			}
+			
 			cgl.setTotal(price * num);
 			allValue += price * num;
 			newCartDto.getGoodsL().add(cgl);
 		}
+
+		newCartDto.setTips(addTips1+addTips2);
 		// allValue
 		newCartDto.setAllValue(allValue);
 
@@ -201,15 +221,30 @@ public class CartAction extends SupportAction {
 			newCartDto.setCouponCode("首单自动优惠至一折,无需输入");
 			couponValue = allValue * 0.9;
 		}
-		newCartDto.setActPrice(Tool.formatDouble(allValue - couponValue, 2));
-		newCartDto.setCouponValue(Tool.formatDouble(couponValue, 2));
+		newCartDto.setActPrice(allValue - couponValue);
+		newCartDto.setCouponValue(couponValue);
 		newCartDto.setUserMoney(userInformation.getMoney());
 		return newCartDto;
 
 	}
-
+	
+	
+	
+	
+	
+	
 	/**
-	 * 在session中读取 cartInformation或者 创建 .
+	 * 更新Cart
+	 * @return
+	 */
+	public String updateCart() {
+		this.checkCreatCartInformation();
+		cartDto = this.update(cartInformation);
+		super.request.put("cartDto", cartDto);
+		return "all";
+	}
+	/**
+	 * 在session中读取或创建cartInformation .
 	 * 
 	 * 如果session中已存在,不会创建
 	 * 

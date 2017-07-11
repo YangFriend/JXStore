@@ -183,7 +183,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			 	</form>
 			  </div>
 			<div> <span> 注册日期：</span> <p>${userInformation.regDate}</p></div>
-		 	<div> <span> 登陆状态</span> <p >${ip} / ${osInfo} </p> </div>
+		 	<div> <span> 登陆状态:</span> <p >${ip} / ${osInfo} </p> </div>
 		
 			<div> <p id="tips" style="color:red;" > ${errorMsg} &nbsp;</p></div>
 		</div>

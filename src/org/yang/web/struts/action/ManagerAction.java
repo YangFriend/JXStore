@@ -163,7 +163,7 @@ public class ManagerAction extends SupportAction {
 	}
 	
 	/**
-	 * TODO 上传文件的拦截器 返回input 再看看
+	 * 
 	 * 
 	 * 上传商品处理
 	 * @return

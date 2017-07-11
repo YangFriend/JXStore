@@ -83,9 +83,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                 <table cellspacing="0" class="shop_table cart">
                                     <thead>
                                         <tr>
-                                            <th class="product-remove">&nbsp;</th>
+                                            <th class="product-remove"> <a title="移除全部" class="remove" href="action/cart-removeAll">×</a> </th>
                                             <th class="product-thumbnail">&nbsp;</th>
                                             <th class="product-name">游戏</th>
+                                            <th class="product-name">库存</th>
                                             <th class="product-price">价格</th>
                                             <th class="product-quantity">数量</th>
                                             <th class="product-subtotal">小计</th>
@@ -97,24 +98,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                                    			<input type="hidden" name="cartDto.goodsL[${struts.index}].name" value="${gl.name}">
                                    			<input type="hidden" name="cartDto.goodsL[${struts.index}].price" value="${gl.price}">
                                    			<input type="hidden" name="cartDto.goodsL[${struts.index}].image" value="${gl.image}">
-                               
+                                   			<input type="hidden" name="cartDto.goodsL[${struts.index}].surplus" value="${gl.surplus}">
+                               				
 	                                         <tr class="cart_item">
 	                                            <td class="product-remove">
 	                                                <a title="Remove this item" class="remove" href="action/cart-remove?goodsId=${gl.id}">×</a> 
 	                                            </td>
-	
+	                                            
 	                                            <td class="product-thumbnail">
 	                                                <a href="action/goods-detail?goodsId=${gl.id}"><img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="jsp/goods/img/${gl.image}"></a>
 	                                            </td>
-	
+	                                            
 	                                            <td class="product-name">
 	                                                <a href="action/goods-detail?goodsId=${gl.id}">${gl.name}</a> 
 	                                            </td>
-	
+	                                            
+	                                             <td class="product-name">
+								                    <c:choose>
+												    <c:when test="${gl.surplus < gl.num}">
+												    	<span class="amount" style="color:red">${gl.surplus}</span>
+												    </c:when>
+												     <c:otherwise>
+												        <span class="amount">${gl.surplus}</span> 
+												      </c:otherwise>
+													</c:choose>
+	                                             
+	                                            </td>
+	                                            
 	                                            <td class="product-price">
 	                                                <span class="amount">￥${gl.price}</span> 
 	                                            </td>
-	
+	                                            
 	                                            <td class="product-quantity">
 	                                                <div class="quantity buttons_added">
 	                                                    <input type="number" name="cartDto.goodsL[${struts.index}].num" size="4" class="input-text qty text" title="Qty" value="${gl.num }" min="0" step="1">

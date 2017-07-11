@@ -188,7 +188,7 @@ public class GoodsDao extends ParentDao {
 	public List<Goods> getLatest(int max) {
 
 		Query query = super.getCurrentSession().createQuery(
-				"from Goods order by addedDate");
+				"from Goods where status = 0 order by addedDate");
 		query.setMaxResults(max);
 		return query.list();
 	}

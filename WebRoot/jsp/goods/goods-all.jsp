@@ -103,18 +103,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     <div class="product-pagination text-center">
                         <nav>
                           <ul class="pagination">
-                           <c:if test="${pageNow-1 > 0 }" >
+                           <c:if test="${(pageNow-1) > 0 }" >
                             <li>
 		                       <a href="action/goods-all?pageNow=${pageNow-1}" aria-label="Previous">
 		                        <span aria-hidden="true">&laquo;</span>
 		                       </a>
                           	</li>
                             </c:if>
-                             <c:if test="${pageNow-1 > 0 }" >
+                             <c:if test="${(pageNow-1) > 0 }" >
                             	<li><a href="action/goods-all?pageNow=${pageNow-1}">${pageNow-1}</a></li>
                             </c:if>
                             	<li><a href="#" style="color: black;" onclick="return false">  ${pageNow} </a> </li>
-                            <c:if test="${pageNow+1 <= pageCount }" >
+                            <c:if test="${(pageNow+1) <= pageCount }" >
                             	<li><a href="action/goods-all?pageNow=${pageNow+1}">${pageNow+1}</a></li>
                             </c:if>
                              <c:if test="${pageNow+2 < pageCount }" >
@@ -123,7 +123,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                               <c:if test="${pageNow+3 < pageCount }" >
                             	<li><a href="action/goods-all?pageNow=${pageNow+3}">${pageNow+3}</a></li>
                             </c:if>
-                            <c:if test="${pageNow+1 <= pageCount }" >
+                            <c:if test="${(pageNow+1) <= pageCount }" >
 								<li><a href="action/goods-all?pageNow=${pageNow+1}" aria-label="Next">
 		                         <span aria-hidden="true">&raquo;</span>
 		                    </a></li>
@@ -135,7 +135,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div>
         </div>
     </div>
-
 	<jsp:include page="/jsp/partpage/tail.jsp" />
   </body>
 </html>

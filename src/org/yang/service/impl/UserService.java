@@ -129,12 +129,12 @@ public class UserService {
 		// 通过Order查询的User还能解决实时问题 ;
 		User orderUser = order.getUser();
 
-		// 算下够不够money
+		// 商品总价值;算下够不够money
 		double goodsValue = order.getAllValue();
 
 		double userMoney = orderUser.getMoney();
 
-		if (orderUser.getGread() >= 5) {
+		if (orderUser.getGread() == 5) {
 			// 首单用户5
 			goodsValue = goodsValue * 0.1;
 		}
@@ -186,7 +186,7 @@ public class UserService {
 		// 订单:更新商品详情
 		orderDao.updateOrder(order, orderGoodsDS);
 
-		// 用户扣钱 ,gread=6 持久化 清空temp list.. (TODO 这里非常不好,设计之前没想到coupon问题...
+		// 用户扣钱 ,gread=6(移除首单优惠) 持久化 清空temp list.. (TODO 这里非常不好,设计之前没想到coupon问题...
 		// 将就吧...)
 		orderUser.setGread(6);
 		orderUser.setMoney(userMoney - goodsValue);
@@ -268,7 +268,7 @@ public class UserService {
 	}
 
 	/**
-	 * 使用已经是密文的密码 加载/查询
+	 * 使用已经是密文的密码 (登陆)加载/查询
 	 * 
 	 * @param u
 	 * @return 返回新的完整的user; 登陆失败返回null
@@ -279,17 +279,7 @@ public class UserService {
 		return u;
 	}
 
-	/**
-	 * 使用id 加载/查询 User
-	 * 
-	 * @param id
-	 * @return
-	 */
-	@Transactional(readOnly = true)
-	public User loadUserById(long id) {
-		return userDao.loadUser(id);
 
-	}
 
 	/**
 	 * 刷新用户信息

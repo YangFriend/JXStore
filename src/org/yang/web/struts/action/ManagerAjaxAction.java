@@ -8,7 +8,6 @@ import org.yang.util.Tool;
 
 
 
-//TODO 它也要加入拦截器
 
 @Component("managerAjaxAction")
 @Scope("prototype")

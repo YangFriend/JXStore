@@ -6,6 +6,7 @@ public class CartGoodsList {
 	private String name;
 	private double price;
 	private String image;
+	private int surplus;
 	private int num;
 	private double total;
 
@@ -47,6 +48,14 @@ public class CartGoodsList {
 
 	public void setNum(int num) {
 		this.num = num;
+	}
+	
+	public int getSurplus() {
+		return surplus;
+	}
+
+	public void setSurplus(int surplus) {
+		this.surplus = surplus;
 	}
 
 	public double getTotal() {

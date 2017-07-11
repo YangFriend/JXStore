@@ -2,6 +2,8 @@ package org.yang.dto;
 
 import java.util.List;
 
+import org.yang.util.Tool;
+
 public class CartDto {
 
 	List<CartGoodsList> goodsL;
@@ -29,7 +31,7 @@ public class CartDto {
 	}
 
 	public double getAllValue() {
-		return allValue;
+		return Tool.formatDouble(allValue, 2) ;
 	}
 
 	public void setAllValue(double allValue) {
@@ -37,7 +39,7 @@ public class CartDto {
 	}
 
 	public double getCouponValue() {
-		return couponValue;
+		return Tool.formatDouble(couponValue, 2);
 	}
 
 	public void setCouponValue(double couponValue) {
@@ -45,7 +47,7 @@ public class CartDto {
 	}
 
 	public double getActPrice() {
-		return actPrice;
+		return Tool.formatDouble(actPrice, 2);
 	}
 
 	public void setActPrice(double actPrice) {

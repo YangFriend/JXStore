@@ -77,7 +77,7 @@ public class GoodsAction extends SupportAction {
 	public String all() {
 		long pageCount = goodsService.getCount();
 		if (pageNow > pageCount) {
-			request.put("info", "以下没有商品了.");
+			request.put("info", "没有了.");
 			return "error";
 		}
 		List<Goods> goodsList = goodsService.getPageList(pageNow);
