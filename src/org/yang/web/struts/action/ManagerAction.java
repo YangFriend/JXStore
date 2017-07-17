@@ -252,6 +252,7 @@ public class ManagerAction extends SupportAction {
 		}
 		orderList = managerService.getOrderList(page);
 		
+		pageInf.setPage(page);
 		pageInf.setPageCount(page);
 		pageInf.setPageCount(pageCount);
 		

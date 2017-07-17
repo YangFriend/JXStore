@@ -58,7 +58,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<center>
 		<h2>抱歉...</h2>
 		<h2>我一直在避免出现这类的问题</h2>
-		<h3>终究人算不如天算 :( </h3>
+		<h3>终究还是人算不如天算 :( </h3>
 		
 		<s:fielderror fieldName="errorMessage"></s:fielderror>
 		<a href="action/goods-turnIndex">点此返回主站</a>

@@ -1,7 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 <%@ page language="java" import="javax.servlet.http.Cookie"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <%
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
@@ -112,27 +111,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                         <ul class="pagination">
                          <c:if test="${pageInf.page-1 > 0 }" >
                           <li>
-                       <a href="action/manager-goods?display=${pageInf.display}&page=${pageInf.page-1}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                       </a>
+		                       <a href="action/manager-checkoutOrder?page=${pageInf.page-1}" aria-label="Previous">
+		                        <span aria-hidden="true">&laquo;</span>
+		                       </a>
                         	</li>
                          </c:if>
                            <c:if test="${pageInf.page-1 > 0 }" >
-                          	<li><a href="action/manager-goods?display=${pageInf.display}&page=${pageInf.page-1}">${pageInf.page-1}</a></li>
+                          	<li><a href="action/manager-checkoutOrder?page=${pageInf.page-1}">${pageInf.page-1}</a></li>
                           </c:if>
                           	<li><a href="#" style="color: black;" onclick="return false">  ${pageInf.page} </a> </li>
                           <c:if test="${pageInf.page+1 <= pageInf.pageCount }" >
-                          	<li><a href="action/manager-goods?display=${pageInf.display}&page=${pageInf.page+1}">${pageInf.page+1}</a></li>
+                          	<li><a href="action/manager-checkoutOrder?page=${pageInf.page+1}">${pageInf.page+1}</a></li>
                           </c:if>
                            <c:if test="${pageInf.page+2 < pageInf.pageCount }" >
-                          	<li><a href="action/manager-goods?display=${pageInf.display}&page=${pageInf.page+2}">${pageInf.page+2}</a></li>
+                          	<li><a href="action/manager-checkoutOrder?page=${pageInf.page+2}">${pageInf.page+2}</a></li>
                           </c:if>
                             <c:if test="${pageInf.page+3 < pageInf.pageCount }" >
-                          	<li><a href="action/manager-goods?display=${pageInf.display}&page=${pageInf.page+3}">${pageInf.page+3}</a></li>
+                          	<li><a href="action/manager-checkoutOrder?page=${pageInf.page+3}">${pageInf.page+3}</a></li>
                           </c:if>
                           
                           <c:if test="${pageInf.page+1 <= pageInf.pageCount }" >
-						<li><a href="action/manager-goods?display=${pageInf.display}&page=${pageInf.page+1}" aria-label="Next">
+						<li><a href="action/manager-checkoutOrder?page=${pageInf.page+1}" aria-label="Next">
                          <span aria-hidden="true">&raquo;</span>
                     	</a></li>
 					</c:if>
@@ -141,7 +140,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                   </div>
               </div>
           </div>
-	
 	<jsp:include page="partpage/admin-tail.jsp" />
   </body>
 </html>

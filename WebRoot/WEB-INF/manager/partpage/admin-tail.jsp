@@ -9,8 +9,10 @@
 					  <tr>
 					    <td>&nbsp;</td>
 					    <td><a href="action/manager-managerCenter">Nav</a></td>
+					    <td>&nbsp;&nbsp;-&nbsp;&nbsp;</td>
 					    <td><a href="action/manager-users">管理用户</a></td>
 					    <td><a href="action/manager-goods">管理商品</a></td>
+					    <td><a href="action/manager-bulletin">管理公告</a></td>
 					    <td><a href="action/manager-checkoutOrder">所有订单</a></td>
 					    <td><a href="action/manager-logout">安全退出</a></td>
 					    <td>&nbsp;&nbsp;-&nbsp;&nbsp;</td>

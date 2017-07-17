@@ -70,7 +70,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	
 	<div style="margin: 80px 35px 1px;" >
-		<p>当前显示: <span style="color:red">${pageInf.hint} </span> - 第 ${pageInf.page} 页   -  共 ${pageInf.pageCount} 页 </p>
+		<p>当前显示: <span style="color:red">${pageInf.hint} </span> - 第 ${pageInf.page} 页   /  共 ${pageInf.pageCount} 页 </p>
 	
 	</div>
 
