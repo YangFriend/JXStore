@@ -138,7 +138,7 @@ public class GoodsDao extends ParentDao {
 	 */
 	public long getSellCount() {
 		Query query = super.getCurrentSession().createQuery(
-				"select count(*) from Goods where status = 0");
+				"select count(g) from Goods as g where status = 0");
 
 		return (Long) query.uniqueResult();
 
